@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/33f1ec5491.js"></script>
+    <link rel="stylesheet" href="./style.css/styleb1.css">
+    <title>Bài thực hành nâng cao 1</title>
+</head>
+
+<body>
+    <header>
+        <h1>Feedback TA</h1>
+    </header>
+    <div class="wrap">
+        <div class="container">
+            <h1>Thầy Phú dạy anh em có hay không?????</h1>
+            <div id="number" class="number">
+                <button onclick="one()">1</button>
+                <button onclick="one()">2</button>
+                <button onclick="one()">3</button>
+                <button onclick="one()">4</button>
+                <button onclick="one()">5</button>
+                <button onclick="one()">6</button>
+                <button onclick="one()">7</button>
+                <button onclick="one()">8</button>
+                <button onclick="one()">9</button>
+                <button onclick="one()">10</button>
+            </div>
+            <div class="feed-back-input">
+                <input id="feed-back" type="text">
+                <button onclick="sendFeedback()">Send</button>
+            </div>
+        </div>
+    </div>
+    <div id="quantity-average"></div>
+    <div class="comment-container" id="comment-container">
+        <div class="comment-grade">10</div>
+        <div class="comment">
+            không hay yyyyy
+        </div>
+        <div onclick="edit()" class="edit"><i class="fa-sharp fa-solid fa-pen-to-square"></i></div>
+        <div onclick="deleteFeedback()" class="delete"><i class="fa-sharp fa-solid fa-x"></i></div>
+    </div>
+    <script>
+        let listFeedback = JSON.parse(localStorage.getItem("listFeedback"));
+        let count = 1;
+        function sendFeedback() {
+            let valueFeedback = document.getElementById("feed-back").value;
+
+            let newFeedback = {
+                comment: valueFeedback,
+            }
+
+            let flag = JSON.parse(localStorage.getItem("flag"));
+            if (flag != null) {
+                listFeedback.splice(flag, 1, newFeedback);
+                localStorage.removeItem("flag");
+                localStorage.setItem("listFeedback", JSON.stringify(listFeedback))
+                renderFeedback();
+                return;
+            }
+
+            if (listFeedback == null) {
+                listFeedback = [];
+            }
+
+            listFeedback.push(newFeedback);
+            localStorage.setItem("listFeedback", JSON.stringify(listFeedback))
+            renderFeedback();
+        }
+
+        renderFeedback();
+
+        function one() {
+            count = 1;
+        }
+
+        function renderFeedback() {
+            let result = ``;
+            for (i = 0; i < listFeedback.length; i++) {
+                result +=
+                    `
+                    <div class="comment-grade">${count}</div>
+                    <div class="comment">${listFeedback[i].comment}</div>
+                    <div onclick="edit(${i})" class="edit"><i class="fa-sharp fa-solid fa-pen-to-square"></i></div>
+                    <div onclick="deleteFeedback(${i})" class="delete"><i class="fa-sharp fa-solid fa-x"></i></div>
+                    `
+            }
+            document.getElementById("comment-container").innerHTML = result;
+        }
+
+        function edit(id) {
+            document.getElementById("feed-back").value = listFeedback[id].comment;
+            localStorage.setItem("flag", id);
+            renderFeedback();
+        }
+
+        function deleteFeedback(id) {
+            if (confirm("Are you sure want to delete?") == true) {
+                listFeedback.splice(id, 1);
+            localStorage.setItem("listFeedback", JSON.stringify(listFeedback));
+            renderFeedback();
+            }
+        }
+
+    </script>
+</body>
+
+</html>

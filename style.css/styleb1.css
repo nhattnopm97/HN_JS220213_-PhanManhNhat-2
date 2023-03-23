@@ -1,0 +1,112 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(1, 1, 26);
+}
+
+header {
+    text-align: center;
+    background-color: rgb(3, 3, 75);
+}
+
+header h1 {
+    color: pink;
+}
+
+.wrap {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    border-radius: 20px;
+    margin: 50px;
+}
+
+.container {
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+}
+
+.container .number button {
+    margin: 50px 10px 10px 10px;
+    width: 43px;
+    padding: 10px;
+    border-radius: 50px;
+    border: none;
+    background-color: rgba(230, 224, 224, 0.779);
+    font-size: larger;
+}
+
+.feed-back-input {
+    margin: 40px 30px 30px 40px;
+}
+
+.feed-back-input input {
+    border-radius: 8px;
+    border: solid 1px gray;
+    padding: 20px 10px 20px 10px;
+    width: 640px;
+    border: solid 1px gray;
+}
+
+.feed-back-input button {
+    position: relative;
+    bottom: 45px;
+    left: 250px;
+    padding: 10px 40px 10px 40px;
+    border-radius: 5px;
+    font-size: small;
+    border: solid 1px gray;
+    cursor: pointer;
+}
+
+.feed-back-input button:hover {
+    background-color: rgb(20, 20, 20);
+    color: white;
+}
+
+.comment-container {
+    margin: 50px;
+}
+
+.comment-grade {
+    position: relative;
+    right: 28px;
+    top: 45px;
+    width: 50px;
+    border-radius: 30px;
+    border: solid white 2px;
+    background-color: palevioletred;
+    font-size: x-large;
+    padding: 11px;
+    color: white;
+    text-align: center;
+}
+
+.comment {
+    background-color: white;
+    border-radius: 20px;
+    margin-top: 10px;
+    padding: 60px;
+    font-size: larger;
+}
+
+.edit {
+    position: relative;
+    bottom: 130px;
+    left: 780px;
+    font-size: larger;
+    cursor: pointer;
+}
+
+.delete {
+    position: relative;
+    bottom: 151px;
+    left: 810px;
+    font-size: larger;
+    cursor: pointer;
+}

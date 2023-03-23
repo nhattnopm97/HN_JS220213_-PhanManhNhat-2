@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài thực hành nânng cao 2</title>
+    <link rel="stylesheet" href="./style.css/styleb2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+
+    <header class="header" id="headrImportant">
+        <!-- <div class ="playAndPoint">
+            <div>Player:3</div>
+            <div>Total Points:0</div>
+        </div>
+        <div class="logoRikkei"><h2>Rikkei Scoreboard</h2></div>
+        <div class="stopwatch">
+            <div>stopwatch</div>
+            <div>0</div>
+            <button>START</button>
+            <button>RESSET</button>
+
+        </div> -->
+    </header>
+
+    <table id="tableName" class="tablecss">
+
+    </table>
+
+    <div class="footer">
+        <input class="inputName" id="inputPlayer" type="text" placeholder="Enter a play's name">
+        <button onclick="addPlayer()" class="addName">ADD PLAYER</button>
+    </div>
+    <script>
+
+        let playerandsc = JSON.parse(localStorage.getItem("playerandsc"));
+        let ttSC = 0;
+
+        function addPlayer() {
+            console.log("11111");
+            let play = document.getElementById("inputPlayer").value;
+            let sc = 0;
+            let player = {
+                play: play,
+                score: sc,
+            }
+            if (playerandsc == null) {
+                playerandsc = [];
+            }
+            playerandsc.push(player);
+            localStorage.setItem("playerandsc", JSON.stringify(playerandsc));
+            renderPlayer();
+            renderHeader();
+
+        }
+
+        function renderPlayer() {
+            let result = "";
+            for (i = 0; i < playerandsc.length; i++) {
+                result +=
+                    `
+                <tr>
+                    <td><button class="btnsc" onclick="del(${i})">xóa</button></td>
+                    <td><i class="fa-regular fa-crown"></i></td>
+                    <td>${playerandsc[i].play}</td>
+                    <td><button class="btnsc" onclick="downSC(${i})">-</button></td>
+                    <td>${playerandsc[i].score}</td>
+                    <td><button class="btnsc" onclick="upSC(${i})">+</button></td>
+                </tr>
+                `;
+            }
+            document.getElementById("tableName").innerHTML = result;
+            document.getElementById("inputPlayer").value = "";
+        }
+        renderPlayer();
+
+
+        function del(idLP) {
+            playerandsc.splice(idLP, 1);
+            localStorage.setItem("playerandsc", JSON.stringify(playerandsc));
+            renderPlayer();
+            renderHeader();
+        }
+
+        function upSC(id) {
+            ++playerandsc[id].score;
+            localStorage.setItem("playerandsc", JSON.stringify(playerandsc));
+            renderPlayer();
+            renderHeader()
+        }
+
+        function downSC(a) {
+            --playerandsc[a].score;
+            localStorage.setItem("playerandsc", JSON.stringify(playerandsc));
+            renderPlayer();
+            renderHeader()
+        }
+
+        function renderHeader() {
+            let a = 0;
+            for (j = 0; j < playerandsc.length; j++) {
+                a += playerandsc[j].score;
+                ttSC = a;
+            }
+            let headerRender =
+                `
+            <div class ="playAndPoint">
+                <div>Player:${playerandsc.length}</div>
+                <div>Total Points:${ttSC}</div>
+            </div>
+            <div class="logoRikkei"><h2>Rikkei Scoreboard</h2></div>
+            <div class="stopwatch">
+                <div>STOPWATCH</div>
+                <div class="second" id="seconds">0</div>
+                <button onclick="start()" id="start">START</button>
+                <button onclick="reset()">RESSET</button>
+    
+            </div>
+            `;
+            console.log("111111111111");
+            document.getElementById("headrImportant").innerHTML = headerRender;
+        }
+        renderHeader();
+
+        let timeElapsed = 0;
+        let timerId;
+        let flag = 0;
+        function start() {
+            ++flag;
+            if (flag == 1) {
+                timeElapsed = 0;
+                document.getElementById("seconds").innerText = timeElapsed + " giây";
+                timerId = setInterval(function () {
+                    timeElapsed++;
+                    document.getElementById("seconds").innerText = timeElapsed + " giây";
+                }, 1000);
+                document.getElementById("start").innerHTML = "STOP";
+                return;
+            }else{
+                document.getElementById("start").innerHTML = "START";
+                flag=0;
+                return timeElapsed = 0;
+            }
+        }
+        function reset() {
+            clearInterval(timerId);
+            timeElapsed = 0;
+            document.getElementById("seconds").innerText = timeElapsed + " giây";
+        }
+    </script>
+</body>
+
+</html>
