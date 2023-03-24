@@ -17,7 +17,7 @@
         <h2>Thầy Phú dạy có hay không ?</h2>
 
         <table id="tableso">
-            <tr id ="intable">
+            <tr id="intable">
                 <!-- <td><button></button></td>
                 <td><button></button></td>
                 <td><button></button></td>
@@ -34,6 +34,11 @@
         <input id="inputrv" type="text" placeholder="write a review">
         <button onclick="sendrv()">SEND</button>
 
+        <div>
+            <div id="countRv">Số lượng review</div>
+            <div id="rateRv">Điểm đánh giá trung bình</div>
+        </div>
+
         <table id="tablecoment">
             <!-- <tr>
                 <td>diem</td>
@@ -45,14 +50,13 @@
     </div>
 
     <script>
-
-        let listScore = JSON.parse(localStorage.getItem("listScore"));
-        function renderBangso(){
-            let a = [1,2,3,4,5,6,7,8,9,10];
-            let tb="";
-            for(i=0;i<a.length;i++){
-                tb += 
-                `
+        //tạo bảng điểm đánh giá
+        function renderBangso() {
+            let a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            let tb = "";
+            for (i = 0; i < a.length; i++) {
+                tb +=
+                    `
                 <td><button onclick="flagScore(${i})">${a[i]}</button></td>
                 
                 `;
@@ -61,26 +65,91 @@
         }
         renderBangso();
 
-        function flagScore(id){
+        //đặt cờ cho điểm được bấm vào
+        function flagScore(id) {
             let scorerv = id;
             let cmt = "";
             let scAndCmt = {
-                scorerv:scorerv,
-                cmt:cmt
+                scorerv: scorerv,
+                cmt: cmt
             }
-            if(listScore==null){
+            let listScore = JSON.parse(localStorage.getItem("listScore"));
+            if (listScore == null) {
                 listScore = [];
+                listScore.push(scAndCmt);
+                localStorage.setItem("listScore", JSON.stringify(listScore));
+            } else {
+                listScore.splice([0], 1);
+                listScore.push(scAndCmt);
+                localStorage.setItem("listScore", JSON.stringify(listScore));
             }
-            listScore.push(scAndCmt);
-            localStorage.setItem("listScore",listScore);
         }
 
-        function sendrv(){
-            //listScore[] = document.getElementById("inputrv").value;
-
-
-            document.getElementById("inputrv").value="";
+        function sendrv() {
+            let listScore = JSON.parse(localStorage.getItem("listScore"));
+            let listReview = JSON.parse(localStorage.getItem("listReview"));
+            if (listScore == null) {
+                alert("Bạn chưa chọn số điểm đánh giá");
+                return;
+            }
+            listScore[0].cmt = document.getElementById("inputrv").value;
+            let review = {
+                scoreReview: listScore[0].scorerv + 1,
+                comment: listScore[0].cmt
+            }
+            console.log(review)
+            if (listReview == null) {
+                listReview = [];
+            }
+            listReview.push(review);
+            localStorage.setItem("listReview", JSON.stringify(listReview));
+            renderListComment();
+            conculatorRateReview();
         }
+
+        //in list review
+        function renderListComment() {
+            let listReview = JSON.parse(localStorage.getItem("listReview"));
+            let kq = "";
+            for (j = 0; j < listReview.length; j++) {
+                kq +=
+                    `
+                <tr>
+                    <td>${listReview[j].scoreReview} Điểm</td>
+                    <td>${listReview[j].comment}</td>
+                    <td><button>Chỉnh sửa</button></td>
+                    <td><button onclick="del(${j})">Xóa</button></td>
+                </tr>
+                `;
+            }
+
+            document.getElementById("tablecoment").innerHTML = kq;
+            document.getElementById("inputrv").value = "";
+        }
+        renderListComment();
+
+        //xóa đánh giá
+        function del(idLRv) {
+            let listReview = JSON.parse(localStorage.getItem("listReview"));
+            listReview.splice([idLRv], 1);
+            localStorage.setItem("listReview", JSON.stringify(listReview));
+            renderListComment();
+            conculatorRateReview();
+        }
+
+        //tính số người đánh giá và điểm đánh giá trung bình
+        function conculatorRateReview() {
+            let listReview = JSON.parse(localStorage.getItem("listReview"));
+            let ttRate = 0;
+            for (k = 0; k < listReview.length; k++) {
+                ttRate += listReview[k].scoreReview;
+            }
+            let avrRate = ttRate / listReview.length;
+            document.getElementById("countRv").innerHTML = `Người review: ${listReview.length}`;
+            document.getElementById("rateRv").innerHTML = `Điểm đánh giá trung bình ${avrRate}`;
+        }
+        conculatorRateReview();
+
     </script>
 </body>
 
